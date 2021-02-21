@@ -1,0 +1,40 @@
+//https://leetcode.com/explore/featured/card/february-leetcoding-challenge-2021/586/week-3-february-15th-february-21st/3646/
+
+class Solution {
+public:
+    int romanToInt(string s) {
+        map< char , int > d;
+        d['I'] = 1;
+        d['V'] = 5;
+        d['X'] = 10;
+        d['L'] = 50;
+        d['C'] = 100;
+        d['D'] = 500;
+        d['M'] = 1000;
+        
+        int sum=0;
+        int i;
+        for( i=0; i < s.length()-1; i++){
+
+            if ( d[s[i+1]] <= d[s[i]]){
+                sum += d[s[i]];
+            }
+            else if (d[s[i+1]] > d[s[i]]){
+                sum += d[s[i+1]] - d[s[i]];
+                i++;
+            }
+        }
+        sum += d[s[i]];
+        return sum;
+    }
+};
+
+// Sample 
+
+// Input
+// s = "LVIII"
+
+// Output
+// 58
+
+
