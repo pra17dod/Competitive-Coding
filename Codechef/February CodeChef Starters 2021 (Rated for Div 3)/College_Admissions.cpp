@@ -5,7 +5,7 @@ using namespace std;
 
 typedef long long int          ll;
 typedef vector<ll>             vec;
-typedef pair<ll,ll >           pll;
+typedef pair<ll,ll>            pll;
 typedef vector<ll>::iterator   itr;
 
 #define P                      pair
@@ -27,81 +27,71 @@ typedef vector<ll>::iterator   itr;
 #define FORR(a, b, c, s)       for (ll (a) = (b); (a) >= (c); (a)-=s)
 #define FAST                   ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
-class Stud {
-    public:
-    ll rank, id;
-    vec list; 
-};
-
-class Clg {
-    public:
-    ll rank,id;
-    bool avail = true;
-};
-
-bool studRank( Stud const &a, Stud const &b){
-    return (a.rank < b.rank);
+bool sortRank( const pll &a, const pll &b ){
+    return a.S < b.S;
 }
-
-bool clgRank( Clg const &a, Clg const &b){
-    return (a.rank < b.rank);
-}
-
 
 void solve(){
     ll n=0,m=0;
     cin >> n >> m;
-    ll i=0;
-
-    vector <ll> clg;
-    vector <bool> clgAvail(n, true);
+    
+    vector <pll> clg;
     FOR(i,0,n,1){
-        ll t=0;
-        cin >> t;
-        clg.PB(t);
+        ll te=0;
+        cin >> te;
+        clg.PB(MP(i+1,te));
     }
 
-    Stud s[m];
-    while(i < m){
-        s[i].id = i;
-        cin >> s[i].rank; 
-        i++;
-    }
-    sort(s, s+m, studRank);
-
-    i=0;
-    while(i<m){
-        ll p=0;
-        cin >> p;
-        while(p--){
-            ll temp=0;
-            cin >> temp;
-            s[i].list.PB(temp);
-        }  
-        i++;    
-    }
-    ll ans = 0;
+    vector <pll> stud;
     FOR(i,0,m,1){
-        ll maxr = 0,flag=0;
-        FOR(j,0,s[i].list.size(),1){    
-            ll pos = s[i].list[j]-1;
-            ll df = clg[pos];
-            if( clg[maxr] >= clg[pos] && clgAvail[pos]){
-                maxr = pos;
-                flag = 1;
+        ll te=0;
+        cin >> te;
+        stud.PB(MP(i+1,te));
+    }
 
+    vector < vector <pll> > list;
+
+    FOR(i,0,m,1){
+        ll k = 0;
+        cin >> k;
+        vector <pll> v;
+        FOR(i,0,k,1){
+            ll te=0;
+            cin >> te;
+            v.PB(MP(te,clg[te-1].S));
+        }
+        sort(ALL(v),sortRank);
+        list.PB(v);
+    }
+
+    sort(ALL(stud),sortRank);
+    sort(ALL(clg),sortRank);
+
+    vector <bool> clgAvail(n,true);
+    ll ans=0;
+    FOR(i,0,m,1){
+        ll maxr = INF, pos=-1,got=0;
+        for(auto c: list[stud[i].F-1]){
+            if( clgAvail[c.F-1]== true && maxr > c.S){
+                maxr = min( maxr, c.S);
+                pos = (c.F-1);
+                got = 1;
             }
         }
-        if( flag ) {
-            clgAvail[maxr] = false;
-            maxr++;
+        if(got){
+            clgAvail[pos] = false;
+            
         }
-        if(s[i].id == 0){
-            ans = maxr;
-            break;
-        }        
+        if(stud[i].F==1 && got){
+            ans = pos+1;
+            break;            
+        }
+        
+
     }
+
     PE(ans);
+
 }
 
 int main(){
