@@ -1,3 +1,5 @@
+//https://www.hackerrank.com/challenges/jumping-on-the-clouds/problem
+
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -78,3 +80,12 @@ vector<string> split_string(string input_string) {
 
     return splits;
 }
+
+// Sample Input 
+
+// 7
+// 0 0 1 0 0 1 0
+
+// Sample Output 
+
+// 4
