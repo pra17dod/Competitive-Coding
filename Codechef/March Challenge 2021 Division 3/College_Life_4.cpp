@@ -27,142 +27,93 @@ typedef vector<ll>::iterator   itr;
 #define FORR(a, b, c, s)       for (ll (a) = (b); (a) >= (c); (a)-=s)
 #define FAST                   ios_base::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL)
 
-ll cake(ll &e, ll &h){
+ll cake(ll &e, ll &h, ll &tl, ll od){
     ll n=0;
     n = (e>h)?h:e;
     e-=n; h-=n;
-    return n;
-}
 
-ll shake(ll &h){
-    ll n=0;
-    n = h/3;
-    h%=3;
-    return n;
-}
-
-ll omelete(ll &e){
-    ll n=0;
-    n = e/2;
-    e%=2;
-    return n;
-}
-
-ll modify(ll &p1, ll &p2, ll &p3 , ll n){
-    while( (p1+p2+p3) > n){
-        if(p3){
-            p3--;
-        }
-        else if(p2){
-            p2--;
-        }
-        else if(p1){
-            p1--;
-        }
+    if( (tl+n) > od){
+        n = od - tl;
+        tl = od;        
     }
-    return (p1+p2+p3);
+    return n;
 }
+
+ll shake(ll &h, ll &tl, ll od){
+    ll n=0;
+    n = h/3; h%=3;
+
+    if( (tl+n) > od){
+        n = od - tl;
+        tl = od;        
+    }
+    return n;
+}
+
+ll omelete(ll &e, ll &tl, ll od){
+    ll n=0;
+    n = e/2; e%=2;
+
+    if( (tl+n) > od){
+        n = od - tl;
+        tl = od;        
+    }
+    return n;
+}
+
 
 void solve(){
     ll n=0, e=0, h=0, a=0, b=0, c=0;
     cin >> n >> e >> h >> a >> b >> c;
-    ll order = 0;
-    ll price = 0;
-    //case a : a<=b<=c
-    if( a<=b && a<c && b<=c){
-        //PE("1");
-        ll on=0,sn=0,cn=0;
-        on = omelete(e);
-        sn = shake(h);
-        cn = cake(e, h);
 
-        order = modify( on, sn, cn, n);
-        price = a*on + b*sn + c*cn;
-    }
-    //case b : a<=c<=b
-    else if( a<=c && a <b && c<=b){
-        //PE("2");
-        ll on=0,sn=0,cn=0;
-        on = omelete(e);
-        cn = cake(e, h);
-        sn = shake(h);
-
-        order = modify( on, cn, sn, n);
-        price = a*on + b*sn + c*cn;
-    }
-    //case c : b<=a<=c
-    else if( b<=a && b <c && a<=c){
-        //PE("3");
-        ll on=0,sn=0,cn=0;
-        sn = shake(h);
-        on = omelete(e);
-        cn = cake(e, h);
-
-        order = modify( sn, on, cn, n);
-        price = a*on + b*sn + c*cn;
-    }
-    //case d:  b<=c<=a
-    else if( b<=c && b < a && c<=a){
-        //PE("4");
-        ll on=0,sn=0,cn=0;
-        if(b==c){
-            cn = cake(e, h);
-            sn = shake(h);        
-        }else{
-            sn = shake(h);
-            cn = cake(e, h);
+    vector <pll> r;
+    vector <vec> p = { {1,2,3}, {1,3,2}, {2,1,3},
+                       {2,3,1}, {3,1,2}, {3,2,1} }; 
+    
+    FOR(i,0,6,1){
+        ll k = e, m = h;
+        ll odr = 0;
+        ll pr = 0;
+        ll on=0, sn=0, cn=0, tl=0;
+        FOR(j,0,3,1){
+            if((on+sn+cn)<n){
+                if( p[i][j] == 1){
+                    on = omelete(k, tl, n); 
+                }
+                else if ( p[i][j] == 2){
+                    sn = shake(m, tl, n);
+                }
+                else if ( p[i][j] == 3){
+                    cn = cake(k, m, tl, n);
+                }
+            }
         }
-        on = omelete(e);
 
-        order = modify( sn, cn, on, n);
-        price = a*on + b*sn + c*cn;
-    }
-    //case e:  c<=a<=b
-    else if( c<=a && c < b && a<=b){
-        //PE("5");
-        ll on=0,sn=0,cn=0;
-        cn = cake(e, h);
-        on = omelete(e);
-        sn = shake(h);
-
-        order = modify( cn, on, sn, n);
-        price = a*on + b*sn + c*cn;
-    }
-    //case f : c<=b<=a
-    else if( c<=b && c < a && b<=a){
-        //PE("6");
-        ll on=0,sn=0,cn=0;
-        cn = cake(e, h);
-        sn = shake(h);
-        on = omelete(e);
-
-        order = modify( cn, sn, on, n);
-        price = a*on + b*sn + c*cn;
-    }
-    //case g : a=b=c
-    else if( a==b && b==c && c==a){
-        //PE("7");
-        ll on=0,sn=0,cn=0;
-        cn = cake(e, h);
-        on = omelete(e);
-        sn = shake(h);        
-
-        order = modify( on, sn, cn, n);
-        price = a*on + b*sn + c*cn;
+        odr = on+sn+cn;
+        pr = a*on+b*sn+c*cn;
+        if(odr == n){
+            r.PB(MP(pr,odr));
+        }
     }
 
-    if(order==n){
-        PE(price);
+    sort(ALL(r));
+    ll ans = -1;
+    for(auto i: r){
+        if(i.S == n){
+            ans = i.F;
+            break;
+        }
     }
-    else PE(-1);
+    
+    PE(ans);
 }
 
 int main(){
     FAST;
-    #ifndef ONLINE_JUDGE
-    freopen("input.txt", "r", stdin);
-    freopen("output.txt", "w", stdout);
-    #endif
+    // #ifndef ONLINE_JUDGE
+    // freopen("input.txt", "r", stdin);
+    // freopen("output.txt", "w", stdout);
+    // #endif
     
     ll t=0;
     cin >> t;
@@ -184,40 +135,4 @@ int main(){
 
 // -1
 // 7
-// 4
-
-// Total cases of the prices of a b c 
-// 13
-// 1 2 3
-// 2 3 1
-// 3 1 2
-// 3 2 1
-// 2 1 3
-// 1 3 2
-// 1 1 1
-// 1 2 2
-// 2 2 1
-// 2 1 2
-// 1 1 2
-// 1 2 1
-// 2 1 1
-
-
-
-
-
-
-
-// 1
-// 5
-// 4
-// 6
-// 3
-// 2
-// 7
-// 1
-// 5
-// 3
-// 1
-// 2
 // 4
