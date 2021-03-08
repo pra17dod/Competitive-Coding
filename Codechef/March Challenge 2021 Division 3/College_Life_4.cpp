@@ -36,6 +36,7 @@ ll cake(ll &e, ll &h, ll &tl, ll od){
         n = od - tl;
         tl = od;        
     }
+    else tl += n;
     return n;
 }
 
@@ -47,6 +48,7 @@ ll shake(ll &h, ll &tl, ll od){
         n = od - tl;
         tl = od;        
     }
+    else tl += n;
     return n;
 }
 
@@ -58,6 +60,7 @@ ll omelete(ll &e, ll &tl, ll od){
         n = od - tl;
         tl = od;        
     }
+    else tl += n;
     return n;
 }
 
@@ -90,7 +93,7 @@ void solve(){
         }
 
         odr = on+sn+cn;
-        pr = a*on+b*sn+c*cn;
+        pr = a*on +b*sn +c*cn;
         if(odr == n){
             r.PB(MP(pr,odr));
         }
