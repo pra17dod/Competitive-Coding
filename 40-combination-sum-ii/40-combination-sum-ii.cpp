@@ -14,7 +14,7 @@ public:
         }
     }
     
-    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+    vector<vector<int>> combinationSum2(vector<int> candidates, int target) {
         vector <vector < int >> res;
         vector < int > vec;
         sort(candidates.begin(), candidates.end());
