@@ -1,25 +1,24 @@
 class Solution {
 public:
-    void recCall (vector<int>& can, int id, int tg, vector <vector <int>> &res, vector <int> vec) {
+    void recCall (vector<int>& cd, int tg, int id, vector <int> vec, vector <vector <int>> &res) {
         if (tg == 0) {
             res.push_back(vec);
-            return;            
+            return;
         }
-        for (int i = id; i < can.size(); i++) {
-            if (i > id and can[i] == can[i-1]) continue;
-            if (tg >= can[i]) {
-                vec.push_back(can[i]);
-                recCall (can, i + 1, tg - can[i], res, vec);
-                vec.pop_back();
-            }
-            else break;
+        for (int i = id; i < cd.size(); i++) {
+            if (i > id and cd[i] == cd[i-1]) continue;
+            if (tg < cd[i]) break;
+            vec.push_back(cd[i]);
+            recCall (cd, tg - cd[i], i + 1, vec, res);
+            vec.pop_back();
         }
     }
+    
     vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
-        vector <vector <int>> res;
-        vector <int> vec;
-        sort (candidates.begin(), candidates.end());
-        recCall (candidates, 0, target, res, vec);
+        vector <vector < int >> res;
+        vector < int > vec;
+        sort(candidates.begin(), candidates.end());
+        recCall (candidates, target, 0, vec, res);
         return res;
     }
 };
