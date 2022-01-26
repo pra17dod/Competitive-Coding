@@ -1,17 +1,15 @@
 class Solution {
 private:
-    void recCall (vector<int> n, int i, vector <vector <int>> &res) {
+    void recCall (vector<int> &n, int i, vector <vector <int>> &res) {
         if (i == n.size()) {
             res.push_back(n);
             return;
         }
-        // for (int i = id; i < n.size(); i++) {
-            for (int j = i; j < n.size(); j++) {
-                    swap(n[i], n[j]);
-                    recCall (n, i+1, res);
-                    swap(n[i], n[j]);            
-            }           
-        // }
+        for (int j = i; j < n.size(); j++) {
+                swap(n[i], n[j]);
+                recCall (n, i+1, res);
+                swap(n[i], n[j]);            
+        }           
     }
     
 public:
