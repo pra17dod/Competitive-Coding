@@ -1,7 +1,5 @@
 class Solution {
-public:
-   
-    
+public:   
     void recCall (int id, int tg, vector <int> vec, vector<int> &c, vector<vector <int>> &res) {
         if (id == c.size()) {
             if (tg == 0) res.push_back(vec);
