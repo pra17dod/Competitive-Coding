@@ -3,25 +3,19 @@ public:
     vector <int> vec;
     
     MyHashSet() {
+        vec.resize(int(1e6+1));
     }
     
     void add(int key) {
-        auto it = find(vec.begin(), vec.end(), key);
-        if (it == vec.end())
-            vec.push_back(key);
+        vec[key] = 1;
     }
     
     void remove(int key) {
-        auto it = find(vec.begin(), vec.end(), key);
-        if (it != vec.end())
-        vec.erase(it);
+        vec[key] = 0;
     }
     
     bool contains(int key) {
-        auto it = find(vec.begin(), vec.end(), key);
-        if (it == vec.end()) 
-            return false;
-        else return true;
+        return vec[key];
     }
 };
 
