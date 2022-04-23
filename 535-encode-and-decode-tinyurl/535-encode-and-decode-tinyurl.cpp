@@ -5,9 +5,10 @@ public:
     string encode(string longUrl) {
         string enc = "aaaaaa";
         for (int i = 0; i < longUrl.length(); i++) {
-            enc[i%6] = (enc[i%6] + longUrl[i])%126 + 'a';
+            enc[i%6] = (enc[i%6] + longUrl[i])%30 + 'a';
         }
         mp[enc] = longUrl;
+        cout << enc << endl;
         return enc; 
     }
 
