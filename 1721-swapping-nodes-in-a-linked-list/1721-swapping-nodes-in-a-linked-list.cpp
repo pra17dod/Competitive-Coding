@@ -16,7 +16,6 @@ public:
     }
     
     ListNode* swapNodes(ListNode* head, int k) {
-        int l = k-1;
         ListNode* slow = head;
         ListNode* ans = new ListNode();
         ans = slow;
