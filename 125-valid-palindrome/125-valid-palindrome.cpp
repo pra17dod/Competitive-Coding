@@ -4,12 +4,8 @@ public:
         if (i > j) return true;
         
         if (s[i] == s[j])
-        {
-            if (rec(s, i+1, j-1) == true)
-                return true;
-        }
-        
-        return false;
+            return rec(s, i+1, j-1);
+        else return false;
     }
     
 public:
