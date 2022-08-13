@@ -1,50 +1,69 @@
-class Solution 
-{
+class Solution {
 public:
-    string longestPalindrome(string s) 
-    {
-        int n=s.size(); 
+    int t[1005][1005];
+    
+    string lcs(string a, string b) {
+        memset (t, 0, sizeof(t));
+        int n = a.size();
+        priority_queue < pair <int, pair <int, int>> > pq;
         
-        //dp[i][j] will be false if substring s[i..j] is not palindrome, Else true
-        vector<vector<bool>> dp(n, vector<bool> (n,false));
-        
-        //All substrings of length 1 are palindromes
-        for(int i=0; i<n; i++) dp[i][i]=true;
-        
-        int start=0, lenMax=1;
-        
-        // check for sub-string of length 2.
-        for(int i=0; i<n-1; i++) 
-        {
-            if(s[i]==s[i+1])
-            {
-                dp[i][i+1] = true;
-                start = i;
-                lenMax = 2;
-            }
-        }
-        
-        // Check for sub-string of length greater than 2.
-        for(int k=3; k<=n; k++)  // k is length of substring
-        {
-            for(int i=0; i<n-k+1; i++) // Fix the starting index
-            {
-                int j=i+k-1; // Get the ending index of substring from starting index i and length k
-                
-                // checking for sub-string from ith index to jth index if s[i+1] to s[j-1] is a palindrome
-                if(dp[i+1][j-1]==true && s[i]==s[j])
-                {
-                    dp[i][j] = true;
-                    
-                    if(k>lenMax)
-                    {
-                        lenMax = k;
-                        start=i;
+        for (int i = 1; i <= n; i++) {
+            for (int j = 1; j <= n; j++) {
+                if (a[i-1] == b[j-1]) {
+                    t[i][j] = 1 + t[i-1][j-1];
+                    if (t[i][j] > 1) {
+                        pq.push({t[i][j], {i, j}});
                     }
                 }
-            }
+                else t[i][j] = 0;
+            } 
         }
         
-        return s.substr(start, lenMax); //print sub-string from start to lenMax
+        string op;
+
+        while (!pq.empty()) {
+            auto s = pq.top();
+            pq.pop();
+            
+            int len = s.first;
+            int i = s.second.first, j = s.second.second;
+            
+            
+            for (int k = 0; k < len; k++) {
+                if (a[i-1 - k] == a[i-1 - (len -1 -k)]) {
+                    op.push_back(a[i-1 - k]);
+                }
+            }
+                        
+            if (op.size() == len) {
+                break;
+            }
+            else op.clear();
+        }
+        
+        if (op.empty()) {
+            op = a[0];
+        }
+        
+        return op;
+            
+    }
+    
+    bool isPalindrome(string s, int st) {
+        if (st > s.size()/2) return true;
+        
+        if (s[st] == s[s.size() - st - 1]) 
+            return isPalindrome(s, st+1);
+        
+        else return false;
+    }
+    
+    string longestPalindrome(string s) {
+        if (s.empty())
+            return "";
+        
+        string p = s; 
+        reverse(p.begin(), p.end());
+        return lcs (s, p);
     }
 };
